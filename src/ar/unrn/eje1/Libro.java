@@ -1,22 +1,25 @@
 package ar.unrn.eje1;
 
-public class Libro {
-  public static final int INFANTILES = 2;
-  public static final int REGULARES = 0;
-  public static final int NUEVO_LANZAMIENTO = 1;
-  private String nombre;
-  private int codigoPrecio;
+import java.util.Objects;
 
-  public Libro(String nombre, int priceCode) {
-    this.nombre = nombre;
-    this.codigoPrecio = priceCode;
-  }
+public abstract class Libro {
+	private String nombre;
+	private Integer codigoPrecio;
 
-  public int codigoPrecio() {
-    return codigoPrecio;
-  }
+	protected static final Integer PUNTO = 1;
 
-  public String nombre() {
-    return nombre;
-  }
+	public Libro(String nombre, Integer codigoPrecio) {
+		this.nombre = Objects.requireNonNull(nombre);
+		this.codigoPrecio = Objects.requireNonNull(codigoPrecio);
+	}
+
+	public Integer codigoPrecio() {
+		return codigoPrecio;
+	}
+
+	public abstract Double calcularMonto(Integer diasAlquilados, Double monto);
+
+	public Integer sumarPuntos(Integer diasAlquilados, Integer puntosAlquilerFrecuente) {
+		return PUNTO + puntosAlquilerFrecuente;
+	}
 }

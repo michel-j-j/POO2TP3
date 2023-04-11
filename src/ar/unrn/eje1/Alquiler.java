@@ -1,19 +1,21 @@
 package ar.unrn.eje1;
 
+import java.util.Objects;
+
 public class Alquiler {
-  private CopiaLibro copia;
-  private int diasAlquilados;
+	private Libro copia;
+	private Integer diasAlquilados;
 
-  public Alquiler(CopiaLibro copia, int diasAlquilados) {
-    this.copia = copia;
-    this.diasAlquilados = diasAlquilados;
-  }
+	public Alquiler(Libro copia, Integer diasAlquilados) {
+		this.copia = Objects.requireNonNull(copia);
+		this.diasAlquilados = Objects.requireNonNull(diasAlquilados);
+	}
 
-  public int diasAlquilados() {
-    return this.diasAlquilados;
-  }
+	public Double calcularMonto(Double monto) {
+		return copia.calcularMonto(diasAlquilados, monto);
+	}
 
-  public CopiaLibro copia() {
-    return this.copia;
-  }
+	public Integer sumarPuntos(Integer puntosAlquilerFrecuente) {
+		return copia.sumarPuntos(diasAlquilados, puntosAlquilerFrecuente);
+	}
 }

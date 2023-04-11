@@ -6,99 +6,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.opencsv.CSVReader;
 
 public class Recaudacion {
-  public static List<Map<String, String>> where(Map<String, String> options)
-      throws IOException {
-    List<String[]> csvData = new ArrayList<String[]>();
-    CSVReader reader = new CSVReader(new FileReader("data.csv"));
-    String[] row = null;
 
-    while ((row = reader.readNext()) != null) {
-      csvData.add(row);
-    }
+	private static TipoFiltro COMPANIA = TipoFiltro.COMPANIA;
+	private static TipoFiltro CIUDAD = TipoFiltro.CIUDAD;
+	private static TipoFiltro ESTADO = TipoFiltro.ESTADO;
+	private static TipoFiltro ENTORNO = TipoFiltro.ENTORNO;
 
-    reader.close();
-    csvData.remove(0);
+	public static List<Map<String, String>> where(Map<String, String> options) throws IOException {
 
-    if (options.containsKey("company_name")) {
-      List<String[]> results = new ArrayList<String[]>();
+		CSV csvControlador = new CSV(new ArrayList<String[]>(), new CSVReader(new FileReader("data.csv")),
+				((HashMap<String, String>) options));
+		csvControlador.cargarCSV();
 
-      for (int i = 0; i < csvData.size(); i++) {
-        if (csvData.get(i)[1].equals(options.get("company_name"))) {
-          results.add(csvData.get(i));
-        }
-      }
-      csvData = results;
-    }
+		if (options.containsKey(COMPANIA.obtenerNombre())) {
+			csvControlador.filtrarPorTipo(COMPANIA.obtenerNombre(), COMPANIA.obtenerValor());
+		}
 
-    if (options.containsKey("city")) {
-      List<String[]> results = new ArrayList<String[]>();
+		if (options.containsKey(CIUDAD.obtenerNombre())) {
+			csvControlador.filtrarPorTipo(CIUDAD.obtenerNombre(), CIUDAD.obtenerValor());
+		}
 
-      for (int i = 0; i < csvData.size(); i++) {
-        if (csvData.get(i)[4].equals(options.get("city"))) {
-          results.add(csvData.get(i));
-        }
-      }
-      csvData = results;
-    }
+		if (options.containsKey(ESTADO.obtenerNombre())) {
 
-    if (options.containsKey("state")) {
-      List<String[]> results = new ArrayList<String[]>();
+			csvControlador.filtrarPorTipo(ESTADO.obtenerNombre(), ESTADO.obtenerValor());
+		}
 
-      for (int i = 0; i < csvData.size(); i++) {
-        if (csvData.get(i)[5].equals(options.get("state"))) {
-          results.add(csvData.get(i));
-        }
-      }
-      csvData = results;
-    }
+		if (options.containsKey(ENTORNO.obtenerNombre())) {
+			csvControlador.filtrarPorTipo(ENTORNO.obtenerNombre(), ENTORNO.obtenerValor());
+		}
 
-    if (options.containsKey("round")) {
-      List<String[]> results = new ArrayList<String[]>();
+		return csvControlador.cargarMapa();
+	}
 
-      for (int i = 0; i < csvData.size(); i++) {
-        if (csvData.get(i)[9].equals(options.get("round"))) {
-          results.add(csvData.get(i));
-        }
-      }
-      csvData = results;
-    }
-
-    List<Map<String, String>> output = new ArrayList<Map<String, String>>();
-
-    for (int i = 0; i < csvData.size(); i++) {
-      Map<String, String> mapped = new HashMap<String, String>();
-      mapped.put("permalink", csvData.get(i)[0]);
-      mapped.put("company_name", csvData.get(i)[1]);
-      mapped.put("number_employees", csvData.get(i)[2]);
-      mapped.put("category", csvData.get(i)[3]);
-      mapped.put("city", csvData.get(i)[4]);
-      mapped.put("state", csvData.get(i)[5]);
-      mapped.put("funded_date", csvData.get(i)[6]);
-      mapped.put("raised_amount", csvData.get(i)[7]);
-      mapped.put("raised_currency", csvData.get(i)[8]);
-      mapped.put("round", csvData.get(i)[9]);
-      output.add(mapped);
-    }
-
-    return output;
-  }
-
-  public static void main(String[] args) {
-    try {
-      Map<String, String> options = new HashMap<String, String>();
-      options.put("company_name", "Facebook");
-      options.put("round", "a");
-      System.out.print(Recaudacion.where(options).size());
-    } catch (IOException e) {
-      System.out.print(e.getMessage());
-      System.out.print("error");
-    }
-  }
-}
-
-
-class NoSuchEntryException extends Exception {
 }
