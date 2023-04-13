@@ -14,11 +14,11 @@ public enum TipoFiltro {
 		this.valor = Objects.requireNonNull(valor);
 	}
 
-	public Integer obtenerValor() {
+	Integer obtenerValor() {
 		return this.valor;
 	}
 
-	public String obtenerNombre() {
+	String obtenerNombre() {
 		return this.nombre;
 	}
 }
