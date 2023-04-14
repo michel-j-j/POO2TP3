@@ -22,7 +22,11 @@ public class ReporteDeGastosTest {
 		misGastos.add(alquiler);
 		misGastos.add(desayuno);
 
-		ReporteDeGastos reporte = new ReporteDeGastos(new ArrayList<Registro>(), LocalDate.now());
+		ProveedorDeFecha fecha = new FechaFake();
+
+		ReporteDeGastos reporte = new ReporteDeGastos(new ArrayList<Registro>(), fecha.obtenerFecha()); // Comparar
+																										// el
+																										// string
 
 		Ticket ticket = reporte.imprimir(misGastos);
 
@@ -34,40 +38,19 @@ public class ReporteDeGastosTest {
 		Assert.assertEquals("", alquiReg.obtenerMarca());
 		Assert.assertEquals("", desaReg.obtenerMarca());
 
-		Assert.assertEquals(LocalDate.now(), ticket.obtenerFecha());
+		Assert.assertEquals(LocalDate.of(2023, 4, 14), ticket.obtenerFecha());
 
-		Assert.assertEquals(5145, (int) ticket.obtenerGasto());
-		Assert.assertEquals(5105, (int) ticket.obtenerTotal());
+		System.out.println();
 
+		Assert.assertEquals(
+				"Expense 2023/4/14\r\n" + "Cena	5100	X\r\n" + "Alquiler de Auto	40	\r\n" + "Desayuno	5	\r\n"
+						+ "Gastos de Comidad: 5145\r\n" + "Total de Gastos: 5105",
+				"Expense 2023/4/14" + System.lineSeparator() + cenaReg.obtenerNombre() + "\t" + cenaReg.obtenerMonto()
+						+ "\t" + cenaReg.obtenerMarca() + System.lineSeparator() + alquiReg.obtenerNombre() + "\t"
+						+ alquiReg.obtenerMonto() + "\t" + alquiReg.obtenerMarca() + System.lineSeparator()
+						+ desaReg.obtenerNombre() + "\t" + desaReg.obtenerMonto() + "\t" + desaReg.obtenerMarca()
+						+ System.lineSeparator() + "Gastos de Comidad: " + ticket.obtenerGasto()
+						+ System.lineSeparator() + "Total de Gastos: " + ticket.obtenerTotal());
 	}
 
-	@Test
-	public void reporteDeGastosOK() {
-
-		List<Gasto> misGastos = new ArrayList<Gasto>();
-
-		Gasto cena2 = new Cena(6000, "Cena con Ravioles");
-		Gasto cena = new Cena(5100, "Cena");
-		Gasto desayuno = new Desayuno(1100, "Desayuno");
-
-		misGastos.add(cena);
-		misGastos.add(cena2);
-		misGastos.add(desayuno);
-
-		ReporteDeGastos reporte = new ReporteDeGastos(new ArrayList<Registro>(), LocalDate.now());
-
-		Ticket ticket = reporte.imprimir(misGastos);
-
-		Registro cenaReg = ticket.obtenerRegistro(0);
-		Registro alquiReg = ticket.obtenerRegistro(1);
-		Registro desaReg = ticket.obtenerRegistro(2);
-
-		Assert.assertEquals("X", cenaReg.obtenerMarca());
-		Assert.assertEquals("X", alquiReg.obtenerMarca());
-		Assert.assertEquals("X", desaReg.obtenerMarca());
-
-		Assert.assertEquals(12200, (int) ticket.obtenerGasto());
-		Assert.assertEquals(12200, (int) ticket.obtenerTotal());
-
-	}
 }

@@ -15,11 +15,9 @@ public class Main {
 		var repo = new PersonaRepository(jdbi);
 		var personas = repo.buscarPorNombre("Vla");
 
-		personas.ifPresent(p -> {
-			for (Persona persona : p) {
-				System.out.println(persona.nombre() + " " + persona.apellido());
-			}
-		});
+		for (Persona persona : personas) {
+			System.out.println(persona.nombre() + " " + persona.apellido());
+		}
 
 		Optional<Persona> persona = repo.buscarId(1L);
 		persona.ifPresent(p -> {

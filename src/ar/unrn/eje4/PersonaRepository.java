@@ -18,7 +18,7 @@ public class PersonaRepository {
 	/**
 	 * Busca por nombre a parte
 	 */
-	public Optional<List<Persona>> buscarPorNombre(String nombreOParte) {
+	public List<Persona> buscarPorNombre(String nombreOParte) { // Devolver una lista vacia, Sin el optional
 		return jdbi.withHandle(handle -> {
 			var rs = handle.select("select nombre, apellido from persona where nombre like ?")
 					.bind(0, "%" + nombreOParte + "%").mapToMap(String.class).list();
@@ -26,14 +26,14 @@ public class PersonaRepository {
 			var personas = new ArrayList<Persona>();
 
 			if (rs.size() == 0) {
-				return Optional.empty();
+				return new ArrayList<Persona>();
 			}
 
 			for (Map<String, String> map : rs) {
 				personas.add(new Persona(map.get("nombre"), map.get("apellido")));
 			}
 
-			return Optional.of(personas);
+			return personas;
 		});
 
 	}
