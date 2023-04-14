@@ -29,7 +29,6 @@ public class CSV {
 	public void filtrarPorTipo(String tipo, Integer indice) { // Hacer la propia interfaz.
 		resultados = csvData.stream().filter(fila -> existeElTipo(csvData.indexOf(fila), indice, tipo))
 				.collect(Collectors.toCollection(ArrayList::new));
-
 		this.csvData = resultados;
 	}
 

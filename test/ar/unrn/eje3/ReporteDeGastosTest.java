@@ -22,7 +22,7 @@ public class ReporteDeGastosTest {
 		misGastos.add(alquiler);
 		misGastos.add(desayuno);
 
-		ReporteDeGastos reporte = new ReporteDeGastos(new ArrayList<Registro>());
+		ReporteDeGastos reporte = new ReporteDeGastos(new ArrayList<Registro>(), LocalDate.now());
 
 		Ticket ticket = reporte.imprimir(misGastos);
 
@@ -54,7 +54,7 @@ public class ReporteDeGastosTest {
 		misGastos.add(cena2);
 		misGastos.add(desayuno);
 
-		ReporteDeGastos reporte = new ReporteDeGastos(new ArrayList<Registro>());
+		ReporteDeGastos reporte = new ReporteDeGastos(new ArrayList<Registro>(), LocalDate.now());
 
 		Ticket ticket = reporte.imprimir(misGastos);
 
